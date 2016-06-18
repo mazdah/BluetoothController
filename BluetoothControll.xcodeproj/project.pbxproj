@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E728D6D91D14364200426F1F /* Definitions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E728D6D81D14364200426F1F /* Definitions.swift */; };
 		E768FBFB1D13D3F00078E79E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E768FBFA1D13D3F00078E79E /* AppDelegate.swift */; };
 		E768FBFD1D13D3F00078E79E /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E768FBFC1D13D3F00078E79E /* ViewController.swift */; };
 		E768FC001D13D3F00078E79E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E768FBFE1D13D3F00078E79E /* Main.storyboard */; };
@@ -35,6 +36,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		E728D6D81D14364200426F1F /* Definitions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Definitions.swift; sourceTree = "<group>"; };
 		E768FBF71D13D3EF0078E79E /* BluetoothControll.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BluetoothControll.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E768FBFA1D13D3F00078E79E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E768FBFC1D13D3F00078E79E /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -101,6 +103,7 @@
 		E768FBF91D13D3F00078E79E /* BluetoothControll */ = {
 			isa = PBXGroup;
 			children = (
+				E728D6D81D14364200426F1F /* Definitions.swift */,
 				E768FBFA1D13D3F00078E79E /* AppDelegate.swift */,
 				E768FBFC1D13D3F00078E79E /* ViewController.swift */,
 				E768FBFE1D13D3F00078E79E /* Main.storyboard */,
@@ -270,6 +273,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E768FBFD1D13D3F00078E79E /* ViewController.swift in Sources */,
+				E728D6D91D14364200426F1F /* Definitions.swift in Sources */,
 				E768FBFB1D13D3F00078E79E /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -503,6 +507,7 @@
 				E768FC211D13D3F10078E79E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		E768FC221D13D3F10078E79E /* Build configuration list for PBXNativeTarget "BluetoothControllTests" */ = {
 			isa = XCConfigurationList;
@@ -511,6 +516,7 @@
 				E768FC241D13D3F10078E79E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		E768FC251D13D3F10078E79E /* Build configuration list for PBXNativeTarget "BluetoothControllUITests" */ = {
 			isa = XCConfigurationList;
@@ -519,6 +525,7 @@
 				E768FC271D13D3F10078E79E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
