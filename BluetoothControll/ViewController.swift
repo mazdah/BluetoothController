@@ -289,19 +289,19 @@ class ViewController: UIViewController, CBCentralManagerDelegate, CBPeripheralDe
     
     @IBAction func buttonUpTouch (sender: UIButton) {
         
-        timer = NSTimer.scheduledTimerWithTimeInterval(0.3, target: self, selector: #selector(ViewController.sendMessage(_:)), userInfo: "buttonUp Touched!!!", repeats: true)
+        timer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: #selector(ViewController.sendMessage(_:)), userInfo: "f", repeats: true)
     }
     
     @IBAction func buttonDownTouch (sender: UIButton) {
-        timer = NSTimer.scheduledTimerWithTimeInterval(0.3, target: self, selector: #selector(ViewController.sendMessage(_:)), userInfo: "buttonDown Touched!!!", repeats: true)
+        timer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: #selector(ViewController.sendMessage(_:)), userInfo: "b", repeats: true)
     }
     
     @IBAction func buttonLeftTouch (sender: UIButton) {
-        timer = NSTimer.scheduledTimerWithTimeInterval(0.3, target: self, selector: #selector(ViewController.sendMessage(_:)), userInfo: "buttonLeft Touched!!!", repeats: true)
+        timer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: #selector(ViewController.sendMessage(_:)), userInfo: "l", repeats: true)
     }
     
     @IBAction func buttonRightTouch (sender: UIButton) {
-        timer = NSTimer.scheduledTimerWithTimeInterval(0.3, target: self, selector: #selector(ViewController.sendMessage(_:)), userInfo: "buttonRight Touched!!!", repeats: true)
+        timer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: #selector(ViewController.sendMessage(_:)), userInfo: "r", repeats: true)
     }
     
     @IBAction func buttonUpRelease (sender: UIButton) {
