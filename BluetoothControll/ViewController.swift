@@ -74,6 +74,7 @@ class ViewController: UIViewController, CBCentralManagerDelegate, CBPeripheralDe
      */
     func scan() {
         
+        //scanForPeripheralsWithServices의 첫번째 인자는 CBUUID가 아니라 CBUUID의 배열이다...애플 API 다시 확인해볼 것!
         centralManager?.scanForPeripheralsWithServices(
             nil, options: [
                 CBCentralManagerScanOptionAllowDuplicatesKey : NSNumber(bool: true)
