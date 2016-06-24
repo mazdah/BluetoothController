@@ -18,6 +18,8 @@ let transferCharacteristicUUID = CBUUID(string: TRANSFER_CHARACTERISTIC_UUID)
 
 // protocall define
 
-let R_CONNECT = 0x80 // 로봇에게 연결 여부를 물음
-let R_READY = 0x81   // 로봇에게 기동 준비를 시킴 로봇으로부터 0x82를 돌려받음
-let R_CLOSE = 0xFF // 로봇의 기동을 중지시키고 자세를 초기화 함
+let R_CONNECT = 0x80    // 로봇에게 연결 여부를 물음
+let R_READY = 0x81      // 로봇에게 기동 준비를 시킴 로봇으로부터 0x82를 돌려받음
+let R_CLOSE = 0xFF      // 로봇의 기동을 중지시키고 자세를 초기화 함
+let CMD_START = 0x01    // command 시작
+let CMD_END = 0x04      // command 종료
