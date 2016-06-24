@@ -17,6 +17,10 @@
 		E768FC101D13D3F10078E79E /* BluetoothControllTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E768FC0F1D13D3F10078E79E /* BluetoothControllTests.swift */; };
 		E768FC1B1D13D3F10078E79E /* BluetoothControllUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E768FC1A1D13D3F10078E79E /* BluetoothControllUITests.swift */; };
 		E768FC291D13E72F0078E79E /* CoreBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E768FC281D13E72F0078E79E /* CoreBluetooth.framework */; };
+		E7A236E01D1CD1B100E295F5 /* MakeActionProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7A236DF1D1CD1B100E295F5 /* MakeActionProtocol.swift */; };
+		E7A236E21D1CD25F00E295F5 /* MakeSernsorProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7A236E11D1CD25F00E295F5 /* MakeSernsorProtocol.swift */; };
+		E7A236E41D1CD2F900E295F5 /* MakeDataProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7A236E31D1CD2F900E295F5 /* MakeDataProtocol.swift */; };
+		E7A236E61D1CFD4800E295F5 /* DataSheet.xlsx in Resources */ = {isa = PBXBuildFile; fileRef = E7A236E51D1CFD4800E295F5 /* DataSheet.xlsx */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -53,6 +57,10 @@
 		E768FC1A1D13D3F10078E79E /* BluetoothControllUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BluetoothControllUITests.swift; sourceTree = "<group>"; };
 		E768FC1C1D13D3F10078E79E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E768FC281D13E72F0078E79E /* CoreBluetooth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreBluetooth.framework; path = System/Library/Frameworks/CoreBluetooth.framework; sourceTree = SDKROOT; };
+		E7A236DF1D1CD1B100E295F5 /* MakeActionProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MakeActionProtocol.swift; sourceTree = "<group>"; };
+		E7A236E11D1CD25F00E295F5 /* MakeSernsorProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MakeSernsorProtocol.swift; sourceTree = "<group>"; };
+		E7A236E31D1CD2F900E295F5 /* MakeDataProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MakeDataProtocol.swift; sourceTree = "<group>"; };
+		E7A236E51D1CFD4800E295F5 /* DataSheet.xlsx */ = {isa = PBXFileReference; lastKnownFileType = file; name = DataSheet.xlsx; path = Arduino/DataSheet.xlsx; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -84,6 +92,7 @@
 		E728D6E11D16827E00426F1F /* Arduino */ = {
 			isa = PBXGroup;
 			children = (
+				E7A236E51D1CFD4800E295F5 /* DataSheet.xlsx */,
 				E728D6E21D1682D400426F1F /* MK1_ROBOT.ino */,
 			);
 			name = Arduino;
@@ -121,6 +130,9 @@
 				E768FC011D13D3F00078E79E /* Assets.xcassets */,
 				E768FC031D13D3F00078E79E /* LaunchScreen.storyboard */,
 				E768FC061D13D3F00078E79E /* Info.plist */,
+				E7A236DF1D1CD1B100E295F5 /* MakeActionProtocol.swift */,
+				E7A236E11D1CD25F00E295F5 /* MakeSernsorProtocol.swift */,
+				E7A236E31D1CD2F900E295F5 /* MakeDataProtocol.swift */,
 			);
 			path = BluetoothControll;
 			sourceTree = "<group>";
@@ -258,6 +270,7 @@
 			files = (
 				E768FC051D13D3F00078E79E /* LaunchScreen.storyboard in Resources */,
 				E768FC021D13D3F00078E79E /* Assets.xcassets in Resources */,
+				E7A236E61D1CFD4800E295F5 /* DataSheet.xlsx in Resources */,
 				E768FC001D13D3F00078E79E /* Main.storyboard in Resources */,
 				E728D6E31D1682D400426F1F /* MK1_ROBOT.ino in Resources */,
 			);
@@ -284,9 +297,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E7A236E01D1CD1B100E295F5 /* MakeActionProtocol.swift in Sources */,
 				E768FBFD1D13D3F00078E79E /* ViewController.swift in Sources */,
 				E728D6D91D14364200426F1F /* Definitions.swift in Sources */,
+				E7A236E21D1CD25F00E295F5 /* MakeSernsorProtocol.swift in Sources */,
 				E768FBFB1D13D3F00078E79E /* AppDelegate.swift in Sources */,
+				E7A236E41D1CD2F900E295F5 /* MakeDataProtocol.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
