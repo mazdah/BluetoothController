@@ -19,6 +19,7 @@ class ViewController: UIViewController, CBCentralManagerDelegate, CBPeripheralDe
     @IBOutlet private weak var buttonDown: UIButton!
     @IBOutlet private weak var buttonLeft: UIButton!
     @IBOutlet private weak var buttonRight: UIButton!
+    @IBOutlet private weak var reset: UIButton!
     
     private var centralManager: CBCentralManager?
     private var discoveredPeripheral: CBPeripheral?
@@ -325,6 +326,11 @@ class ViewController: UIViewController, CBCentralManagerDelegate, CBPeripheralDe
     @IBAction func buttonRightRelease (sender: UIButton) {
         print("buttonRight Release!!!")
         stopTimer();
+    }
+    
+    @IBAction func resetTouched (sender: UIButton) {
+        print("buttonRight Release!!!")
+        sendData(NSData(bytes:actionProtocol.reset(), length:6))
     }
     
     func sendMessage (timer: NSTimer) {

@@ -36,6 +36,15 @@
                                     <action selector="buttonLeftTouch:" destination="BYZ-38-t0r" eventType="touchDown" id="kEp-ya-fYL"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Hf3-T7-TnS">
+                                <rect key="frame" x="332" y="142" width="65" height="65"/>
+                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.50196081400000003" alpha="1" colorSpace="calibratedRGB"/>
+                                <state key="normal" title="▶︎"/>
+                                <connections>
+                                    <action selector="buttonRightRelease:" destination="BYZ-38-t0r" eventType="touchUpInside" id="u5F-jc-9W1"/>
+                                    <action selector="buttonRightTouch:" destination="BYZ-38-t0r" eventType="touchDown" id="8Dm-tx-MWb"/>
+                                </connections>
+                            </button>
                             <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QFm-GX-u6N">
                                 <rect key="frame" x="268" y="206" width="65" height="65"/>
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.50196081400000003" alpha="1" colorSpace="calibratedRGB"/>
@@ -61,13 +70,14 @@
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Hf3-T7-TnS">
-                                <rect key="frame" x="332" y="142" width="65" height="65"/>
-                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.50196081400000003" alpha="1" colorSpace="calibratedRGB"/>
-                                <state key="normal" title="▶︎"/>
+                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Bkn-VP-8B9">
+                                <rect key="frame" x="270" y="285" width="60" height="30"/>
+                                <color key="backgroundColor" red="1" green="0.1183767382" blue="0.094853980030000007" alpha="1" colorSpace="calibratedRGB"/>
+                                <state key="normal" title="RESET">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
                                 <connections>
-                                    <action selector="buttonRightRelease:" destination="BYZ-38-t0r" eventType="touchUpInside" id="u5F-jc-9W1"/>
-                                    <action selector="buttonRightTouch:" destination="BYZ-38-t0r" eventType="touchDown" id="8Dm-tx-MWb"/>
+                                    <action selector="resetTouched:" destination="BYZ-38-t0r" eventType="touchUpInside" id="exv-TN-cR6"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -80,6 +90,7 @@
                             <constraint firstAttribute="bottom" secondItem="hiN-IG-p7z" secondAttribute="bottom" constant="20" symbolic="YES" id="MVu-Og-tSp"/>
                             <constraint firstItem="hiN-IG-p7z" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="20" id="X6M-L4-agH"/>
                             <constraint firstItem="hiN-IG-p7z" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="h2k-21-6gz"/>
+                            <constraint firstItem="Bkn-VP-8B9" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="l1a-xV-Lbt"/>
                         </constraints>
                     </view>
                     <connections>
@@ -88,6 +99,7 @@
                         <outlet property="buttonRight" destination="Hf3-T7-TnS" id="fYV-d4-6yi"/>
                         <outlet property="buttonUp" destination="PoP-RM-FIJ" id="TpG-Sa-HYs"/>
                         <outlet property="connectDeviceLabel" destination="Mqm-3Q-9wU" id="dCf-pY-Mdf"/>
+                        <outlet property="reset" destination="Bkn-VP-8B9" id="lZT-Hb-mkC"/>
                         <outlet property="textView" destination="hiN-IG-p7z" id="JrH-nQ-qMb"/>
                     </connections>
                 </viewController>

@@ -18,6 +18,11 @@ class MakeActionProtocol {
         
     }
     
+    func reset() -> [UInt8] {
+        buffer = [0x72, 0x61, 0x69, 0x00, speed, distance]
+        return buffer
+    }
+    
     // 방향 이동 : 전, 후, 좌, 우
     func goForward() -> [UInt8] {
         buffer = [0x72, 0x61, 0x6D, 0x66, speed, distance]
