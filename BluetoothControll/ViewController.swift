@@ -19,16 +19,19 @@ class ViewController: UIViewController, CBCentralManagerDelegate, CBPeripheralDe
     @IBOutlet private weak var buttonDown: UIButton!
     @IBOutlet private weak var buttonLeft: UIButton!
     @IBOutlet private weak var buttonRight: UIButton!
+    @IBOutlet private weak var reset: UIButton!
     
     private var centralManager: CBCentralManager?
     private var discoveredPeripheral: CBPeripheral?
     private var txCharacteristic:CBCharacteristic?
-    
+
     var timer: NSTimer!
     var speedAmmo = 100
     
     // And somewhere to store the incoming data
     private let data = NSMutableData()
+    
+    private let actionProtocol = MakeActionProtocol()
     
     
     
@@ -290,19 +293,19 @@ class ViewController: UIViewController, CBCentralManagerDelegate, CBPeripheralDe
     
     @IBAction func buttonUpTouch (sender: UIButton) {
         
-        timer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: #selector(ViewController.sendMessage(_:)), userInfo: "f", repeats: true)
+        timer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: #selector(ViewController.sendMessage(_:)), userInfo: NSData(bytes:actionProtocol.goForward(), length:6), repeats: true)
     }
     
     @IBAction func buttonDownTouch (sender: UIButton) {
-        timer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: #selector(ViewController.sendMessage(_:)), userInfo: "b", repeats: true)
+        timer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: #selector(ViewController.sendMessage(_:)), userInfo: NSData(bytes:actionProtocol.goBackward(), length:6), repeats: true)
     }
     
     @IBAction func buttonLeftTouch (sender: UIButton) {
-        timer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: #selector(ViewController.sendMessage(_:)), userInfo: "l", repeats: true)
+        timer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: #selector(ViewController.sendMessage(_:)), userInfo: NSData(bytes:actionProtocol.goLeft(), length:6), repeats: true)
     }
     
     @IBAction func buttonRightTouch (sender: UIButton) {
-        timer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: #selector(ViewController.sendMessage(_:)), userInfo: "r", repeats: true)
+        timer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: #selector(ViewController.sendMessage(_:)), userInfo: NSData(bytes:actionProtocol.goRight(), length:6), repeats: true)
     }
     
     @IBAction func buttonUpRelease (sender: UIButton) {
@@ -325,22 +328,25 @@ class ViewController: UIViewController, CBCentralManagerDelegate, CBPeripheralDe
         stopTimer();
     }
     
+    @IBAction func resetTouched (sender: UIButton) {
+        print("buttonRight Release!!!")
+        sendData(NSData(bytes:actionProtocol.reset(), length:6))
+    }
+    
     func sendMessage (timer: NSTimer) {
-        let msg = timer.userInfo as! String
+        let msg = timer.userInfo as! NSData
         print(msg)
         sendData(msg)
     }
     
-    func sendData (msg: String) {
+    func sendData (msg: NSData) {
         if discoveredPeripheral?.state == CBPeripheralState.Connected {
             print("connected : sendMessage");
         } else {
             print("Not connected");
         }
         
-        if let data = msg.dataUsingEncoding(NSUTF8StringEncoding) {
-            discoveredPeripheral?.writeValue(data, forCharacteristic: txCharacteristic!, type: CBCharacteristicWriteType.WithoutResponse)
-        }
+        discoveredPeripheral?.writeValue(msg, forCharacteristic: txCharacteristic!, type: CBCharacteristicWriteType.WithoutResponse)
 //        if let data = message.dataUsingEncoding(NSUTF8StringEncoding) {
 //            connectedPeripheral!.writeValue(data, forCharacteristic: writeCharacteristic!, type: writeType)
 //        }
