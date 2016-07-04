@@ -22,15 +22,30 @@ int frontRightPin = 3;
 int rearLeftPin = 4;
 int rearRightPin = 5;
 
+int frontLeftPin2 = 6;
+int frontRightPin2 = 7;
+int rearLeftPin2 = 8;
+int rearRightPin2 = 9;
+
 int frontLeftAngle = 90;
 int frontRightAngle = 90;
 int rearLeftAngle = 90;
 int rearRightAngle = 90;
 
+int frontLeftAngle2 = 85;
+int frontRightAngle2 = 85;
+int rearLeftAngle2 = 85;
+int rearRightAngle2 = 85;
+
 Servo frontLeft;
 Servo frontRight;
 Servo rearLeft;
 Servo rearRight;
+
+Servo frontLeft2;
+Servo frontRight2;
+Servo rearLeft2;
+Servo rearRight2;
 
 bool stepSide = true; // true frontLeft, false front right
 bool start = true;
@@ -41,7 +56,7 @@ bool start = true;
 char type[1];
 char target[1];
 char action[1];
-char _direction[1];
+char _direction[1];;
 char _speed[1];
 char distance[1];
 
@@ -56,13 +71,26 @@ void setup()
     rearLeft.attach(rearLeftPin);
     rearRight.attach(rearRightPin);
 
-    frontLeft.write(135);
+    frontLeft2.attach(frontLeftPin2);
+    frontRight2.attach(frontRightPin2);
+    rearLeft2.attach(rearLeftPin2);
+    rearRight2.attach(rearRightPin2);
+
+    frontLeft.write(90);
     delay(500);
-    frontRight.write(45);
+    frontRight.write(90);
     delay(500);
     rearLeft.write(90);
     delay(500);
     rearRight.write(90);
+
+    frontLeft2.write(85);
+    delay(500);
+    frontRight2.write(85);
+    delay(500);
+    rearLeft2.write(85);
+    delay(500);
+    rearRight2.write(85);
     // set the data rate for the BT port
 
     Serial3.begin(9600);
@@ -119,13 +147,21 @@ void loop(){
 
 void reset () {
     start = true;
-    frontLeft.write(135);
+    frontLeft.write(90);
     delay(500);
-    frontRight.write(45);
+    frontRight.write(90);
     delay(500);
     rearLeft.write(90);
     delay(500);
     rearRight.write(90);
+
+    frontLeft2.write(85);
+    delay(500);
+    frontRight2.write(85);
+    delay(500);
+    rearLeft2.write(85);
+    delay(500);
+    rearRight2.write(85);
 }
 
 // 로봇 전진
@@ -137,45 +173,70 @@ void goForward() {
 
         if (start) {
             start = false;
-            for (frontLeftAngle = 135; frontLeftAngle < 91; frontLeftAngle--) {
-                frontLeft.write(frontLeftAngle);
-                delay(15);
-            }
-            delay(500);
+            int level = 1;
+            for (rearRightAngle = 90, frontRightAngle = 90, rearRightAngle2 = 85;
+                rearRightAngle > 44, frontRightAngle < 136;
+                rearRightAngle--, frontRightAngle++, rearRightAngle2 += (2*level)) {
 
-            for (rearRightAngle = 90; rearRightAngle < 136; rearRightAngle++) {
-                rearRight.write(rearRightAngle);
-                delay(15);
-            }
-            delay(500);
-        } else {
-            for (frontLeftAngle = 135, rearRightAngle = 90, frontRightAngle = 90, rearLeftAngle = 45;
-            frontLeftAngle > 91, rearRightAngle < 136, frontRightAngle > 44, rearLeftAngle < 91;
-            frontLeftAngle--, rearRightAngle++, frontRightAngle--, rearLeftAngle++) {
-                frontLeft.write(frontLeftAngle);
-                delay(15);
+                if (rearRightAngle2 == 131) {
+                    level = -1;
+                }
+
                 rearRight.write(rearRightAngle);
                 delay(15);
                 frontRight.write(frontRightAngle);
                 delay(15);
-                rearLeft.write(rearLeftAngle);
+                rearRight2.write(rearRightAngle2);
+                delay(15);
             }
-            delay(500);
+        } else {
+            int level = 1;
+            for (rearRightAngle = 90, frontLeftAngle = 45, frontLeftAngle2 = 85, frontRightAngle = 90, rearRightAngle2 = 85, rearLeftAngle = 135;
+            rearRightAngle < 46, frontLeftAngle < 91, frontRightAngle < 136, rearLeftAngle > 89;
+            rearRightAngle--, frontLeftAngle++, frontRightAngle++, rearLeftAngle--, frontLeftAngle2 += (2*level), rearRightAngle2 += (2*level)) {
+
+                if (frontLeftAngle2 == 131) {
+                    level = -1;
+                }
+
+                frontLeft.write(frontLeftAngle);
+                delay(15);
+                frontRight.write(frontRightAngle);
+                delay(15);
+                frontLeft2.write(frontLeftAngle2);
+                delay(15);
+                rearLeft.write(rearLeftAngle);
+                delay(15);
+                rearRight.write(rearRightAngle);
+                delay(15);
+                rearRight2.write(rearRightAngle2);
+                delay(15);
+            }
         }
     } else {
         stepSide = true;
-        for (frontRightAngle = 45, rearLeftAngle = 90, frontLeftAngle = 90, rearRightAngle = 135;
-        frontRightAngle < 91, rearLeftAngle > 44, frontLeftAngle < 136, rearRightAngle > 91;
-        frontRightAngle++, rearLeftAngle--, frontLeftAngle++, rearRightAngle--) {
-            frontRight.write(frontRightAngle);
-            delay(15);
-            rearLeft.write(rearLeftAngle);
-            delay(15);
-            frontLeft.write(frontLeftAngle);
-            delay(15);
-            rearRight.write(rearRightAngle);
+        int level = -1;
+        for (rearRightAngle = 45, frontLeftAngle = 90, rearLeftAngle2 = 85, frontRightAngle2 = 85, frontRightAngle = 135, rearLeftAngle = 90;
+        rearRightAngle < 91, frontLeftAngle < 46, frontRightAngle < 91, rearLeftAngle < 136;
+        rearRightAngle++, frontLeftAngle--, rearLeftAngle2 += (2*level), frontRightAngle2 += (2*level), frontRightAngle--, rearLeftAngle++) {
+
+        if (rearLeftAngle2 == 39) {
+            level = 1;
         }
-        delay(500);
+
+        frontLeft.write(frontLeftAngle);
+        delay(15);
+        frontRight.write(frontRightAngle);
+        delay(15);
+        rearLeft2.write(rearLeftAngle2);
+        delay(15);
+        rearLeft.write(rearLeftAngle);
+        delay(15);
+        rearRight.write(rearRightAngle);
+        delay(15);
+        frontRight2.write(frontRightAngle2);
+        delay(15);
+        }
     }
 }
 
