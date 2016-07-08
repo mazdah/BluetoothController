@@ -291,6 +291,25 @@ class ViewController: UIViewController, CBCentralManagerDelegate, CBPeripheralDe
         centralManager?.cancelPeripheralConnection(discoveredPeripheral!)
     }
     
+    @IBAction func lognPressForward(sender: UILongPressGestureRecognizer) {
+        let gestureState = sender.state;
+        
+        switch (gestureState) {
+        case .Began :
+            print("Began")
+            
+        case .Changed :
+            print("Changed")
+            
+        case .Ended :
+            print("Ended")
+            
+        default :
+            print("Default")
+        }
+    }
+    
+    
     @IBAction func buttonUpTouch (sender: UIButton) {
         
         timer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: #selector(ViewController.sendMessage(_:)), userInfo: NSData(bytes:actionProtocol.goForward(), length:6), repeats: true)

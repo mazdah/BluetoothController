@@ -21,10 +21,12 @@
                             <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PoP-RM-FIJ">
                                 <rect key="frame" x="268" y="79" width="65" height="65"/>
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.50196081400000003" alpha="1" colorSpace="calibratedRGB"/>
+                                <gestureRecognizers/>
                                 <state key="normal" title="▲"/>
                                 <connections>
                                     <action selector="buttonUpRelease:" destination="BYZ-38-t0r" eventType="touchUpInside" id="pnJ-1i-VgM"/>
                                     <action selector="buttonUpTouch:" destination="BYZ-38-t0r" eventType="touchDown" id="bMB-nI-j8B"/>
+                                    <outletCollection property="gestureRecognizers" destination="MAq-p8-fzU" appends="YES" id="5b3-JQ-SfR"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="orL-Kd-bne">
@@ -104,6 +106,11 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+                <pongPressGestureRecognizer allowableMovement="10" minimumPressDuration="0.5" id="MAq-p8-fzU">
+                    <connections>
+                        <action selector="lognPressForward:" destination="BYZ-38-t0r" id="eMd-vq-dEY"/>
+                    </connections>
+                </pongPressGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="531" y="294"/>
         </scene>
