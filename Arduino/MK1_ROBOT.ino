@@ -10,7 +10,15 @@ Tested on : Arduino 1.0.6, Arduino UNO R3, HC-06 or HM-10 BLE
 
 Copyright (c) 2015 www.bbangpan.com. All rights reserved.
 
-This program can be used for any non-commercial purpose freely. */
+This program can be used for any non-commercial purpose freely.
+
+**************************************************************
+*
+*  2016.07.09 Mazdah 수정
+*
+**************************************************************
+
+*/
 
 
 
@@ -22,17 +30,33 @@ int frontRightPin = 3;
 int rearLeftPin = 4;
 int rearRightPin = 5;
 
-int frontLeftAngle = 90;
-int frontRightAngle = 90;
-int rearLeftAngle = 90;
-int rearRightAngle = 90;
+int frontLeftPin2 = 6;
+int frontRightPin2 = 7;
+int rearLeftPin2 = 8;
+int rearRightPin2 = 9;
+
+int minAngle = 45;                                    // 제 1 관절의 이동 범위 중 최소 각도
+int maxAngle = 135;                                   // 제 1 관절의 이동 범위 중 최대 각도
+int centerAngle = (minAngle + maxAngle) / 2;          // 제 1 관절의 이동 범위 중 중간 각도
+int changedVal = 5;                                   // 제 1 관절의 증감 단위
+int term = (maxAngle - centerAngle) / changedVal;     // 제 1 관절의 중간 각도와 최소 각도 또는 최대 각도 간의 차이 (실제 움직이는 범위
+
+int secondStartAngle = 85;                            // 제 2 관절의 초기 각도
+int secondChangeVal = 3;                              // 제 2 관절의 증감 단위
+int secondHighAngle = secondStartAngle + (secondChangeVal * changedVal * (term / 2)); // 제 2 관절의 리턴 포인트 (이 각도 이후에는 초기 각도로 되돌아옴
+int secondLowAngle = secondStartAngle - (secondChangeVal * changedVal * (term / 2));  //// 제 2 관절의 리턴 포인트 (이 각도 이후에는 초기 각도로 되돌아옴
 
 Servo frontLeft;
 Servo frontRight;
 Servo rearLeft;
 Servo rearRight;
 
-bool stepSide = true; // true frontLeft, false front right
+Servo frontLeft2;
+Servo frontRight2;
+Servo rearLeft2;
+Servo rearRight2;
+
+bool stepPhase = true; // true frontLeft, false front right
 bool start = true;
 
 //int angle = 0; // servo position in degreesint
@@ -41,7 +65,7 @@ bool start = true;
 char type[1];
 char target[1];
 char action[1];
-char _direction[1];
+char _direction[1];;
 char _speed[1];
 char distance[1];
 
@@ -56,13 +80,26 @@ void setup()
     rearLeft.attach(rearLeftPin);
     rearRight.attach(rearRightPin);
 
-    frontLeft.write(135);
-    delay(500);
-    frontRight.write(45);
-    delay(500);
-    rearLeft.write(90);
-    delay(500);
-    rearRight.write(90);
+    frontLeft2.attach(frontLeftPin2);
+    frontRight2.attach(frontRightPin2);
+    rearLeft2.attach(rearLeftPin2);
+    rearRight2.attach(rearRightPin2);
+
+    frontLeft.write(centerAngle);
+    delay(15);
+    frontRight.write(centerAngle);
+    delay(15);
+    rearLeft.write(centerAngle);
+    delay(150);
+    rearRight.write(centerAngle);
+
+    frontLeft2.write(secondStartAngle);
+    delay(15);
+    frontRight2.write(secondStartAngle);
+    delay(15);
+    rearLeft2.write(secondStartAngle);
+    delay(15);
+    rearRight2.write(secondStartAngle);
     // set the data rate for the BT port
 
     Serial3.begin(9600);
@@ -104,100 +141,449 @@ void loop(){
     }
 
 
-
     while (Serial.available()){ // if Serial has input(from serial monitor)
-
         byte data = Serial.read();
-
         Serial3.write(data); // write it to BT
-
     }
-
-
-
 }
 
 void reset () {
     start = true;
-    frontLeft.write(135);
-    delay(500);
-    frontRight.write(45);
-    delay(500);
-    rearLeft.write(90);
-    delay(500);
-    rearRight.write(90);
+    frontLeft.write(centerAngle);
+    delay(15);
+    frontRight.write(centerAngle);
+    delay(15);
+    rearLeft.write(centerAngle);
+    delay(15);
+    rearRight.write(centerAngle);
+
+    frontLeft2.write(secondStartAngle);
+    delay(15);
+    frontRight2.write(secondStartAngle);
+    delay(15);
+    rearLeft2.write(secondStartAngle);
+    delay(15);
+    rearRight2.write(secondStartAngle);
 }
 
 // 로봇 전진
 void goForward() {
     Serial.println("go forward");
 
-    if (stepSide) {
-        stepSide = false;
+    if (start) {
+        start = false;
 
-        if (start) {
-            start = false;
-            for (frontLeftAngle = 135; frontLeftAngle < 91; frontLeftAngle--) {
-                frontLeft.write(frontLeftAngle);
-                delay(15);
-            }
-            delay(500);
+        int rearRightAngle2 = rearRight2.read();
+        int tempCenter = centerAngle, tempCenter2 = centerAngle;
+        int level = changedVal;
 
-            for (rearRightAngle = 90; rearRightAngle < 136; rearRightAngle++) {
-                rearRight.write(rearRightAngle);
-                delay(15);
+        for (int i = 0; i < term; i++) {
+
+            rearRight.write(tempCenter -= changedVal);
+            delay(15);
+
+            frontRight.write(tempCenter2 += changedVal);
+            delay(15);
+
+            //      Serial.print("rearRightAngle2 : ");
+            //      Serial.print(i);
+            //      Serial.print(" : ");
+            //      Serial.println(rearRightAngle2);
+
+            if (rearRightAngle2 == secondHighAngle) {
+                level = -1 * changedVal;
             }
-            delay(500);
-        } else {
-            for (frontLeftAngle = 135, rearRightAngle = 90, frontRightAngle = 90, rearLeftAngle = 45;
-            frontLeftAngle > 91, rearRightAngle < 136, frontRightAngle > 44, rearLeftAngle < 91;
-            frontLeftAngle--, rearRightAngle++, frontRightAngle--, rearLeftAngle++) {
-                frontLeft.write(frontLeftAngle);
-                delay(15);
-                rearRight.write(rearRightAngle);
-                delay(15);
-                frontRight.write(frontRightAngle);
-                delay(15);
-                rearLeft.write(rearLeftAngle);
-            }
-            delay(500);
+
+            rearRight2.write(rearRightAngle2 += (2 * level));
         }
     } else {
-        stepSide = true;
-        for (frontRightAngle = 45, rearLeftAngle = 90, frontLeftAngle = 90, rearRightAngle = 135;
-        frontRightAngle < 91, rearLeftAngle > 44, frontLeftAngle < 136, rearRightAngle > 91;
-        frontRightAngle++, rearLeftAngle--, frontLeftAngle++, rearRightAngle--) {
-            frontRight.write(frontRightAngle);
-            delay(15);
-            rearLeft.write(rearLeftAngle);
-            delay(15);
-            frontLeft.write(frontLeftAngle);
-            delay(15);
-            rearRight.write(rearRightAngle);
+        int frontLeftAngle = frontLeft.read();
+        int frontRightAngle = frontRight.read();
+        int rearLeftAngle = rearLeft.read();
+        int rearRightAngle = rearRight.read();
+
+        int frontLeftAngle2 = secondStartAngle;
+        int frontRightAngle2 = secondStartAngle;
+        int rearLeftAngle2 = secondStartAngle;
+        int rearRightAngle2 = secondStartAngle;
+
+        int tempCenterFL = centerAngle;
+        int tempCenterFR = centerAngle;
+        int tempCenterRL = centerAngle;
+        int tempCenterRR = centerAngle;
+
+        int tempMin = minAngle;
+        int tempMax = maxAngle;
+
+        Serial.print("frontLeftAngle : ");
+        Serial.println(frontLeftAngle);
+
+        if (stepPhase) {
+            stepPhase = false;
+            int level = changedVal * -1;
+
+            for (int i = 0; i < term; i++) {
+                frontLeft.write(tempCenterFL -= changedVal);
+                delay(15);
+
+                rearRight.write(tempMin += changedVal);
+                delay(15);
+
+                //frontRight2 move  85 -> 39 -> 85
+                if (frontRightAngle2 == secondLowAngle) {
+                    level = changedVal;
+                }
+
+                frontRight2.write(frontRightAngle2 += (secondChangeVal * level));
+                frontRight.write(tempMax -= changedVal);
+                delay(15);
+
+                //rearLeft2 move  85 -> 39 -> 85
+                rearLeft2.write(rearLeftAngle2 += (secondChangeVal * level));
+                rearLeft.write(tempCenterRL += changedVal);
+                delay(15);
+            }
+        } else {
+            stepPhase = true;
+            int level = changedVal;
+
+            for (int i = 0; i < term; i++) {
+                frontRight.write(tempCenterFR += changedVal);
+                delay(15);
+
+                rearLeft.write(tempMax -= changedVal);
+                delay(15);
+
+                if (frontLeftAngle2 == secondHighAngle) {
+                    level = -1 * changedVal;
+                }
+
+                frontLeft2.write(frontLeftAngle2 += (secondChangeVal * level));
+                frontLeft.write(tempMin += changedVal);
+                delay(15);
+
+                rearRight2.write(rearRightAngle2 += (secondChangeVal * level));
+                rearRight.write(tempCenterRR -= changedVal);
+                delay(15);
+            }
         }
-        delay(500);
     }
 }
 
 // 로봇 후진
 void goBackward() {
     Serial.println("go backward");
+
+    if (start) {
+        start = false;
+
+        int frontLeftAngle2 = frontLeft2.read();
+        int tempCenter = centerAngle, tempCenter2 = centerAngle;
+        int level = changedVal;
+
+        for (int i = 0; i < term; i++) {
+
+            rearLeft.write(tempCenter += changedVal);
+            delay(15);
+
+            frontLeft.write(tempCenter2 -= changedVal);
+            delay(15);
+
+            //      Serial.print("rearRightAngle2 : ");
+            //      Serial.print(i);
+            //      Serial.print(" : ");
+            //      Serial.println(rearRightAngle2);
+
+            if (frontLeftAngle2 == secondHighAngle) {
+                level = -1 * changedVal;
+            }
+
+            frontLeft2.write(frontLeftAngle2 += (2 * level));
+        }
+    } else {
+        int frontLeftAngle = frontLeft.read();
+        int frontRightAngle = frontRight.read();
+        int rearLeftAngle = rearLeft.read();
+        int rearRightAngle = rearRight.read();
+
+        int frontLeftAngle2 = secondStartAngle;
+        int frontRightAngle2 = secondStartAngle;
+        int rearLeftAngle2 = secondStartAngle;
+        int rearRightAngle2 = secondStartAngle;
+
+        int tempCenterFL = centerAngle;
+        int tempCenterFR = centerAngle;
+        int tempCenterRL = centerAngle;
+        int tempCenterRR = centerAngle;
+
+        int tempMin = minAngle;
+        int tempMax = maxAngle;
+
+        Serial.print("frontLeftAngle : ");
+        Serial.println(frontLeftAngle);
+
+        if (stepPhase) {
+            stepPhase = false;
+            int level = changedVal;
+
+            for (int i = 0; i < term; i++) {
+                //frontRight2 move  85 -> 131 -> 85
+                if (frontLeftAngle2 == secondHighAngle) {
+                    level = changedVal * -1;
+                }
+
+                frontLeft2.write(frontLeftAngle2 += (secondChangeVal * level));
+                frontLeft.write(tempCenterFL -= changedVal);
+                delay(15);
+
+                //rearRight2 move  85 -> 131 -> 85
+                rearRight2.write(rearRightAngle2 += (secondChangeVal * level));
+                rearRight.write(tempMin += changedVal);
+                delay(15);
+
+                frontRight.write(tempMax -= changedVal);
+                delay(15);
+
+                rearLeft.write(tempCenterRL += changedVal);
+                delay(15);
+            }
+        } else {
+            stepPhase = true;
+            int level = changedVal * -1;
+
+            for (int i = 0; i < term; i++) {
+                if (frontRightAngle2 == secondLowAngle) {
+                    level = changedVal;
+                }
+
+                frontRight2.write(frontRightAngle2 += (secondChangeVal * level));
+                frontRight.write(tempCenterFR += changedVal);
+                delay(15);
+
+                rearLeft2.write(rearLeftAngle2 += (secondChangeVal * level));
+                rearLeft.write(tempMax -= changedVal);
+                delay(15);
+
+                frontLeft.write(tempMin += changedVal);
+                delay(15);
+
+                rearRight.write(tempCenterRR -= changedVal);
+                delay(15);
+            }
+        }
+    }
 }
 
 // 로봇 좌로 이동
 void goLeft() {
     Serial.println("go left");
+    if (start) {
+        start = false;
+
+        int frontRightAngle2 = frontRight2.read();
+        int tempCenter = centerAngle, tempCenter2 = centerAngle;
+        int level = changedVal;
+
+        for (int i = 0; i < term; i++) {
+
+            frontRight.write(tempCenter -= changedVal);
+            delay(15);
+
+            frontLeft.write(tempCenter2 += changedVal);
+            delay(15);
+
+            //      Serial.print("rearRightAngle2 : ");
+            //      Serial.print(i);
+            //      Serial.print(" : ");
+            //      Serial.println(rearRightAngle2);
+
+            if (frontRightAngle2 == secondHighAngle) {
+                level = changedVal * -1;
+            }
+
+            frontRight2.write(frontRightAngle2 += (2 * level));
+        }
+    } else {
+        int frontLeftAngle = frontLeft.read();
+        int frontRightAngle = frontRight.read();
+        int rearLeftAngle = rearLeft.read();
+        int rearRightAngle = rearRight.read();
+
+        int frontLeftAngle2 = secondStartAngle;
+        int frontRightAngle2 = secondStartAngle;
+        int rearLeftAngle2 = secondStartAngle;
+        int rearRightAngle2 = secondStartAngle;
+
+        int tempCenterFL = centerAngle;
+        int tempCenterFR = centerAngle;
+        int tempCenterRL = centerAngle;
+        int tempCenterRR = centerAngle;
+
+        int tempMin = minAngle;
+        int tempMax = maxAngle;
+
+        Serial.print("frontLeftAngle : ");
+        Serial.println(frontLeftAngle);
+
+        if (stepPhase) {
+            stepPhase = false;
+            int level = changedVal;
+
+            for (int i = 0; i < term; i++) {
+                frontRight.write(tempMin += changedVal);
+                delay(15);
+
+                rearLeft.write(tempCenterRL -= changedVal);
+                delay(15);
+
+                if (frontLeftAngle2 == secondHighAngle) {
+                    level = -1 * changedVal;
+                }
+
+                frontLeft2.write(frontLeftAngle2 += (secondChangeVal * level));
+                frontLeft.write(tempMax -= changedVal);
+                delay(15);
+
+                rearRight2.write(rearRightAngle2 += (secondChangeVal * level));
+                rearRight.write(tempCenterRR += changedVal);
+                delay(15);
+            }
+        } else {
+            stepPhase = true;
+            int level = changedVal * -1;
+
+            for (int i = 0; i < term; i++) {
+                frontLeft.write(tempCenterFL += changedVal);
+                delay(15);
+
+                rearRight.write(tempMax -= changedVal);
+                delay(15);
+
+                //frontRight2 move  85 -> 39 -> 85
+                if (frontRightAngle2 == secondLowAngle) {
+                    level = changedVal;
+                }
+
+                frontRight2.write(frontRightAngle2 += (secondChangeVal * level));
+                frontRight.write(tempCenterFR -= changedVal);
+                delay(15);
+
+                //rearLeft2 move  85 -> 39 -> 85
+                rearLeft2.write(rearLeftAngle2 += (secondChangeVal * level));
+                rearLeft.write(tempMin += changedVal);
+                delay(15);
+            }
+        }
+    }
 }
 
 // 로봇 우로 이동
 void goRight() {
     Serial.println("go right");
+    if (start) {
+        start = false;
+
+        int rearLeftAngle2 = rearLeft2.read();
+        int tempCenter = centerAngle, tempCenter2 = centerAngle;
+        int level = changedVal * -1;
+
+        for (int i = 0; i < term; i++) {
+
+            rearRight.write(tempCenter += changedVal);
+            delay(15);
+
+            rearLeft.write(tempCenter2 -= changedVal);
+            delay(15);
+
+            //      Serial.print("rearRightAngle2 : ");
+            //      Serial.print(i);
+            //      Serial.print(" : ");
+            //      Serial.println(rearRightAngle2);
+
+            if (rearLeftAngle2 == secondLowAngle) {
+                level = changedVal;
+            }
+
+            rearLeft2.write(rearLeftAngle2 += (2 * level));
+        }
+    } else {
+        int frontLeftAngle = frontLeft.read();
+        int frontRightAngle = frontRight.read();
+        int rearLeftAngle = rearLeft.read();
+        int rearRightAngle = rearRight.read();
+
+        int frontLeftAngle2 = secondStartAngle;
+        int frontRightAngle2 = secondStartAngle;
+        int rearLeftAngle2 = secondStartAngle;
+        int rearRightAngle2 = secondStartAngle;
+
+        int tempCenterFL = centerAngle;
+        int tempCenterFR = centerAngle;
+        int tempCenterRL = centerAngle;
+        int tempCenterRR = centerAngle;
+
+        int tempMin = minAngle;
+        int tempMax = maxAngle;
+
+        Serial.print("frontLeftAngle : ");
+        Serial.println(frontLeftAngle);
+
+        if (stepPhase) {
+            stepPhase = false;
+            int level = changedVal * -1;
+
+            for (int i = 0; i < term; i++) {
+                //frontRight2 move  85 -> 39 -> 85
+                if (frontRightAngle2 == secondLowAngle) {
+                    level = changedVal;
+                }
+
+                frontRight2.write(frontRightAngle2 += (secondChangeVal * level));
+                frontRight.write(tempMin += changedVal);
+                delay(15);
+
+                //rearLeft2 move  85 -> 39 -> 85
+                rearLeft2.write(rearLeftAngle2 += (secondChangeVal * level));
+                rearLeft.write(tempCenterRL -= changedVal);
+                delay(15);
+
+                frontLeft.write(tempMax -= changedVal);
+                delay(15);
+
+                rearRight.write(tempCenterRR += changedVal);
+                delay(15);
+            }
+        } else {
+            stepPhase = true;
+            int level = changedVal;
+
+            for (int i = 0; i < term; i++) {
+                if (frontLeftAngle2 == secondHighAngle) {
+                    level = -1 * changedVal;
+                }
+
+                frontLeft2.write(frontLeftAngle2 += (secondChangeVal * level));
+                frontLeft.write(tempCenterFL += changedVal);
+                delay(15);
+
+                rearRight2.write(rearRightAngle2 += (secondChangeVal * level));
+                rearRight.write(tempMax -= changedVal);
+                delay(15);
+
+                frontRight.write(tempCenterFR -= changedVal);
+                delay(15);
+
+                rearLeft.write(tempMin += changedVal);
+                delay(15);
+            }
+        }
+    }
 }
 
 void turnLeft() {
-    Serial.println("turn left");
+Serial.println("turn left");
 }
 
 void turnRight() {
-    Serial.println("turn right");
+Serial.println("turn right");
 }
