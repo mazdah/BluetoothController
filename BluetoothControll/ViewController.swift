@@ -112,7 +112,13 @@ class ViewController: UIViewController, CBCentralManagerDelegate, CBPeripheralDe
             print("Connecting to peripheral \(peripheral)")
             
             centralManager?.connectPeripheral(peripheral, options: nil)
-            connectDeviceLabel?.text = discoveredPeripheral!.name! + "(" + discoveredPeripheral!.identifier.UUIDString + ")\n"
+            
+            if peripheral.name == nil {
+                connectDeviceLabel?.text = "No name (" + discoveredPeripheral!.identifier.UUIDString + ")\n"
+            } else {
+                connectDeviceLabel?.text = discoveredPeripheral!.name! + "(" + discoveredPeripheral!.identifier.UUIDString + ")\n"
+            }
+            
         }
     }
     
