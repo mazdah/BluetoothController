@@ -21,12 +21,22 @@ class ViewController: UIViewController, CBCentralManagerDelegate, CBPeripheralDe
     @IBOutlet private weak var buttonRight: UIButton!
     @IBOutlet private weak var reset: UIButton!
     
+    @IBOutlet private weak var moveSwitch: UISwitch!
+    @IBOutlet private weak var rotateSwitch: UISwitch!
+    @IBOutlet private weak var twistSwitch: UISwitch!
+    @IBOutlet private weak var tiltSwitch: UISwitch!
+    
     private var centralManager: CBCentralManager?
     private var discoveredPeripheral: CBPeripheral?
     private var txCharacteristic:CBCharacteristic?
 
     var timer: NSTimer!
     var speedAmmo = 100
+    
+    var isMove = true
+    var isRotate = false
+    var isTwist = false
+    var isTilt = false
     
     // And somewhere to store the incoming data
     private let data = NSMutableData()
@@ -315,6 +325,127 @@ class ViewController: UIViewController, CBCentralManagerDelegate, CBPeripheralDe
         }
     }
     
+    @IBAction func longPressLeft(sender: UILongPressGestureRecognizer) {
+        let gestureState = sender.state;
+        
+        switch (gestureState) {
+        case .Began :
+            print("Began")
+            
+        case .Changed :
+            print("Changed")
+            
+        case .Ended :
+            print("Ended")
+            
+        default :
+            print("Default")
+        }
+    }
+    
+    @IBAction func longPressRight(sender: UILongPressGestureRecognizer) {
+        let gestureState = sender.state;
+        
+        switch (gestureState) {
+        case .Began :
+            print("Began")
+            
+        case .Changed :
+            print("Changed")
+            
+        case .Ended :
+            print("Ended")
+            
+        default :
+            print("Default")
+        }
+    }
+    
+    @IBAction func longPressBack(sender: UILongPressGestureRecognizer) {
+        let gestureState = sender.state;
+        
+        switch (gestureState) {
+        case .Began :
+            print("Began")
+            
+        case .Changed :
+            print("Changed")
+            
+        case .Ended :
+            print("Ended")
+            
+        default :
+            print("Default")
+        }
+    }
+    
+    @IBAction func moveToggle(sender: UISwitch) {
+        if sender.on {
+            isMove = true
+            isRotate = false
+            isTwist = false
+            isTilt = false
+            
+            rotateSwitch.setOn(false, animated: true)
+            twistSwitch.setOn(false, animated: true)
+            tiltSwitch.setOn(false, animated: true)
+        } else {
+            if !rotateSwitch.on && !twistSwitch.on && !tiltSwitch.on {
+                moveSwitch.setOn(true, animated: false)
+            }
+        }
+    }
+    
+    @IBAction func rotateToggle(sender: UISwitch) {
+        if sender.on {
+            isMove = false
+            isRotate = true
+            isTwist = false
+            isTilt = false
+            
+            moveSwitch.setOn(false, animated: true)
+            twistSwitch.setOn(false, animated: true)
+            tiltSwitch.setOn(false, animated: true)
+        } else {
+            if !moveSwitch.on && !twistSwitch.on && !tiltSwitch.on {
+                moveSwitch.setOn(true, animated: false)
+            }
+        }
+    }
+    
+    @IBAction func twistToggle(sender: UISwitch) {
+        if sender.on {
+            isMove = false
+            isRotate = false
+            isTwist = true
+            isTilt = false
+            
+            moveSwitch.setOn(false, animated: true)
+            rotateSwitch.setOn(false, animated: true)
+            tiltSwitch.setOn(false, animated: true)
+        } else {
+            if !rotateSwitch.on && !moveSwitch.on && !tiltSwitch.on {
+                moveSwitch.setOn(true, animated: false)
+            }
+        }
+    }
+    
+    @IBAction func tiltToggle(sender: UISwitch) {
+        if sender.on {
+            isMove = false
+            isRotate = false
+            isTwist = false
+            isTilt = true
+            
+            moveSwitch.setOn(false, animated: true)
+            rotateSwitch.setOn(false, animated: true)
+            twistSwitch.setOn(false, animated: true)
+        } else {
+            if !rotateSwitch.on && !twistSwitch.on && !moveSwitch.on {
+                moveSwitch.setOn(true, animated: false)
+            }
+        }
+    }
     
     @IBAction func buttonUpTouch (sender: UIButton) {
         
