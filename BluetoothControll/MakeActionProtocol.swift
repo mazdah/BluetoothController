@@ -109,12 +109,12 @@ class MakeActionProtocol {
     }
 
     // 비틀기 : 좌, 우
-    func skewLeft() -> [UInt8] {
+    func twistLeft() -> [UInt8] {
         buffer = [0x72, 0x61, 0x73, 0x6C, speed, distance]
         return buffer
     }
 
-    func skewRight() -> [UInt8] {
+    func twistRight() -> [UInt8] {
         buffer = [0x72, 0x61, 0x73, 0x72, speed, distance]
         return buffer
     }
