@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
@@ -82,25 +82,25 @@
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="이동" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="I2P-36-hsg">
                                 <rect key="frame" x="474" y="147" width="30" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="회전" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Qyn-zM-fJR">
                                 <rect key="frame" x="474" y="192" width="30" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="비틀기" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mr8-Vh-oel">
                                 <rect key="frame" x="459" y="238" width="45" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="기울기" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nar-zF-aBM">
                                 <rect key="frame" x="459" y="283" width="45" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PoP-RM-FIJ">
@@ -109,8 +109,6 @@
                                 <gestureRecognizers/>
                                 <state key="normal" title="▲"/>
                                 <connections>
-                                    <action selector="buttonUpRelease:" destination="BYZ-38-t0r" eventType="touchUpInside" id="pnJ-1i-VgM"/>
-                                    <action selector="buttonUpTouch:" destination="BYZ-38-t0r" eventType="touchDown" id="bMB-nI-j8B"/>
                                     <outletCollection property="gestureRecognizers" destination="MAq-p8-fzU" appends="YES" id="5b3-JQ-SfR"/>
                                 </connections>
                             </button>
@@ -120,8 +118,6 @@
                                 <gestureRecognizers/>
                                 <state key="normal" title="◀︎"/>
                                 <connections>
-                                    <action selector="buttonLeftRelease:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Utf-vg-l37"/>
-                                    <action selector="buttonLeftTouch:" destination="BYZ-38-t0r" eventType="touchDown" id="kEp-ya-fYL"/>
                                     <outletCollection property="gestureRecognizers" destination="IOx-Ts-C3e" appends="YES" id="dnq-m3-YjU"/>
                                 </connections>
                             </button>
@@ -131,8 +127,6 @@
                                 <gestureRecognizers/>
                                 <state key="normal" title="▶︎"/>
                                 <connections>
-                                    <action selector="buttonRightRelease:" destination="BYZ-38-t0r" eventType="touchUpInside" id="u5F-jc-9W1"/>
-                                    <action selector="buttonRightTouch:" destination="BYZ-38-t0r" eventType="touchDown" id="8Dm-tx-MWb"/>
                                     <outletCollection property="gestureRecognizers" destination="RVe-C1-jNq" appends="YES" id="4mF-T0-Tgd"/>
                                 </connections>
                             </button>
@@ -142,8 +136,6 @@
                                 <gestureRecognizers/>
                                 <state key="normal" title="▼"/>
                                 <connections>
-                                    <action selector="buttonDownRelease:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Y39-jx-gpx"/>
-                                    <action selector="buttonDownTouch:" destination="BYZ-38-t0r" eventType="touchDown" id="JoJ-9E-35b"/>
                                     <outletCollection property="gestureRecognizers" destination="97M-85-do0" appends="YES" id="PG6-Iy-JJI"/>
                                 </connections>
                             </button>

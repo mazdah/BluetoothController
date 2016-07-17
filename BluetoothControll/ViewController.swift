@@ -314,23 +314,42 @@ class ViewController: UIViewController, CBCentralManagerDelegate, CBPeripheralDe
         case .Began :
             print("Began")
             
+            if isMove {
+                timer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: #selector(ViewController.sendMessage(_:)), userInfo: NSData(bytes:actionProtocol.goForward(), length:6), repeats: true)
+            } else if isTilt {
+                
+            }
         case .Changed :
             print("Changed")
             
         case .Ended :
             print("Ended")
-            
+            if isMove {
+                stopTimer()
+            } else if isTilt {
+                
+            }
         default :
             print("Default")
         }
     }
     
     @IBAction func longPressLeft(sender: UILongPressGestureRecognizer) {
+        print("longPressLeft");
         let gestureState = sender.state;
         
         switch (gestureState) {
         case .Began :
             print("Began")
+            if isMove {
+                timer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: #selector(ViewController.sendMessage(_:)), userInfo: NSData(bytes:actionProtocol.goLeft(), length:6), repeats: true)
+            } else if isRotate {
+                timer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: #selector(ViewController.sendMessage(_:)), userInfo: NSData(bytes:actionProtocol.turnLeft(), length:6), repeats: true)
+            } else if isTwist {
+                sendData(NSData(bytes:actionProtocol.twistLeft(), length:6))
+            } else if isTilt {
+                
+            }
             
         case .Changed :
             print("Changed")
@@ -338,24 +357,52 @@ class ViewController: UIViewController, CBCentralManagerDelegate, CBPeripheralDe
         case .Ended :
             print("Ended")
             
+            if isMove {
+                stopTimer()
+            } else if isRotate {
+                stopTimer()
+            } else if isTwist {
+                sendData(NSData(bytes:actionProtocol.reset(), length:6))
+            } else if isTilt {
+                
+            }
         default :
             print("Default")
         }
     }
     
     @IBAction func longPressRight(sender: UILongPressGestureRecognizer) {
+        print("longPressRight");
         let gestureState = sender.state;
         
         switch (gestureState) {
         case .Began :
             print("Began")
             
+            if isMove {
+                timer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: #selector(ViewController.sendMessage(_:)), userInfo: NSData(bytes:actionProtocol.goRight(), length:6), repeats: true)
+            } else if isRotate {
+                timer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: #selector(ViewController.sendMessage(_:)), userInfo: NSData(bytes:actionProtocol.turnRight(), length:6), repeats: true)
+            } else if isTwist {
+                sendData(NSData(bytes:actionProtocol.twistRight(), length:6))
+            } else if isTilt {
+                
+            }
         case .Changed :
             print("Changed")
             
         case .Ended :
             print("Ended")
             
+            if isMove {
+                stopTimer()
+            } else if isRotate {
+                stopTimer()
+            } else if isTwist {
+                sendData(NSData(bytes:actionProtocol.reset(), length:6))
+            } else if isTilt {
+                
+            }
         default :
             print("Default")
         }
@@ -368,12 +415,21 @@ class ViewController: UIViewController, CBCentralManagerDelegate, CBPeripheralDe
         case .Began :
             print("Began")
             
+            if isMove {
+                timer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: #selector(ViewController.sendMessage(_:)), userInfo: NSData(bytes:actionProtocol.goBackward(), length:6), repeats: true)
+            } else if isTilt {
+                
+            }
         case .Changed :
             print("Changed")
             
         case .Ended :
             print("Ended")
-            
+            if isMove {
+                stopTimer()
+            } else if isTilt {
+                
+            }
         default :
             print("Default")
         }
@@ -381,6 +437,9 @@ class ViewController: UIViewController, CBCentralManagerDelegate, CBPeripheralDe
     
     @IBAction func moveToggle(sender: UISwitch) {
         if sender.on {
+            buttonUp.enabled = true
+            buttonDown.enabled = true
+            
             isMove = true
             isRotate = false
             isTwist = false
@@ -403,12 +462,18 @@ class ViewController: UIViewController, CBCentralManagerDelegate, CBPeripheralDe
             isTwist = false
             isTilt = false
             
+            buttonUp.enabled = false
+            buttonDown.enabled = false
+            
             moveSwitch.setOn(false, animated: true)
             twistSwitch.setOn(false, animated: true)
             tiltSwitch.setOn(false, animated: true)
         } else {
             if !moveSwitch.on && !twistSwitch.on && !tiltSwitch.on {
                 moveSwitch.setOn(true, animated: false)
+            } else {
+                buttonUp.enabled = true
+                buttonDown.enabled = true
             }
         }
     }
@@ -420,12 +485,18 @@ class ViewController: UIViewController, CBCentralManagerDelegate, CBPeripheralDe
             isTwist = true
             isTilt = false
             
+            buttonUp.enabled = false
+            buttonDown.enabled = false
+            
             moveSwitch.setOn(false, animated: true)
             rotateSwitch.setOn(false, animated: true)
             tiltSwitch.setOn(false, animated: true)
         } else {
             if !rotateSwitch.on && !moveSwitch.on && !tiltSwitch.on {
                 moveSwitch.setOn(true, animated: false)
+            } else {
+                buttonUp.enabled = true
+                buttonDown.enabled = true
             }
         }
     }
@@ -447,6 +518,7 @@ class ViewController: UIViewController, CBCentralManagerDelegate, CBPeripheralDe
         }
     }
     
+    /*
     @IBAction func buttonUpTouch (sender: UIButton) {
         
         timer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: #selector(ViewController.sendMessage(_:)), userInfo: NSData(bytes:actionProtocol.goForward(), length:6), repeats: true)
@@ -483,6 +555,7 @@ class ViewController: UIViewController, CBCentralManagerDelegate, CBPeripheralDe
         print("buttonRight Release!!!")
         stopTimer();
     }
+    */
     
     @IBAction func resetTouched (sender: UIButton) {
         print("buttonRight Release!!!")
