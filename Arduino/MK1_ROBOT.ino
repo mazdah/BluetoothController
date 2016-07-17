@@ -129,10 +129,16 @@ void loop(){
                     goRight();
                 }
             } else if (action[0] == 0x72) {
-                if (_direction[0] == 0x62) {
+                if (_direction[0] == 0x6C) {
                     turnLeft();
                 } else if (_direction[0] == 0x72) {
                     turnRight();
+                }
+            } else if (action[0] == 0x73) {
+                if (_direction[0] == 0x6C) {
+                    twistLeft();
+                } else if (_direction[0] == 0x72) {
+                    twistRight();
                 }
             } else if (action[0] == 0x69) {
                 reset();
@@ -581,9 +587,189 @@ void goRight() {
 }
 
 void turnLeft() {
-Serial.println("turn left");
+    Serial.println("turn left");
+
+    int tempCenterFL = centerAngle;
+    int tempCenterFR = centerAngle;
+    int tempCenterRL = centerAngle;
+    int tempCenterRR = centerAngle;
+
+    int frontLeftAngle2 = secondStartAngle;
+    int frontRightAngle2 = secondStartAngle;
+    int rearLeftAngle2 = secondStartAngle;
+    int rearRightAngle2 = secondStartAngle;
+
+    int state = frontLeft.read();
+
+    int level = changedVal;
+    for (int i = 0; i < term; i++) {
+        if (frontLeftAngle2 == secondHighAngle) {
+            level = -1 * changedVal;
+        }
+
+        frontLeft2.write(frontLeftAngle2 += (secondChangeVal * level));
+        frontLeft.write(tempCenterFL +=  changedVal);
+        delay(15);
+    }
+    delay(500);
+
+    level = changedVal * -1;
+    for (int i = 0; i < term; i++) {
+        if (frontRightAngle2 == secondLowAngle) {
+            level = changedVal;
+        }
+
+        frontRight.write(tempCenterFR +=  changedVal);
+        frontRight2.write(frontRightAngle2 += (secondChangeVal * level));
+        delay(15);
+    }
+    delay(500);
+
+    level = changedVal;
+    for (int i = 0; i < term; i++) {
+        if (rearRightAngle2 == secondHighAngle) {
+            level = changedVal * -1;
+        }
+
+        rearRight.write(tempCenterRR +=  changedVal);
+        rearRight2.write(rearRightAngle2 += (secondChangeVal * level));
+        delay(15);
+    }
+    delay(500);
+
+    level = changedVal * -1;
+    for (int i = 0; i < term; i++) {
+        if (rearLeftAngle2 == secondLowAngle) {
+            level = changedVal;
+        }
+
+        rearLeft.write(tempCenterRL +=  changedVal);
+        rearLeft2.write(rearLeftAngle2 += (secondChangeVal * level));
+        delay(15);
+    }
+    delay(500);
+
+    for (int i = 0; i < term; i++) {
+        frontLeft.write(tempCenterFL -=  changedVal);
+        delay(15);
+        frontRight.write(tempCenterFR -=  changedVal);
+        delay(15);
+        rearLeft.write(tempCenterRL -=  changedVal);
+        delay(15);
+        rearRight.write(tempCenterRR -=  changedVal);
+    }
+    delay(500);
 }
 
 void turnRight() {
-Serial.println("turn right");
+    Serial.println("turn right");
+    int tempCenterFL = centerAngle;
+    int tempCenterFR = centerAngle;
+    int tempCenterRL = centerAngle;
+    int tempCenterRR = centerAngle;
+
+    int frontLeftAngle2 = secondStartAngle;
+    int frontRightAngle2 = secondStartAngle;
+    int rearLeftAngle2 = secondStartAngle;
+    int rearRightAngle2 = secondStartAngle;
+
+    int state = frontLeft.read();
+
+    int level = changedVal;
+    for (int i = 0; i < term; i++) {
+        if (frontLeftAngle2 == secondHighAngle) {
+            level = changedVal * -1;
+        }
+
+        frontLeft.write(tempCenterFL -=  changedVal);
+        frontLeft2.write(frontLeftAngle2 += (secondChangeVal * level));
+        delay(15);
+    }
+    delay(500);
+
+    level = changedVal * -1;
+    for (int i = 0; i < term; i++) {
+        if (frontRightAngle2 == secondLowAngle) {
+            level = changedVal;
+        }
+
+        frontRight.write(tempCenterFR -=  changedVal);
+        frontRight2.write(frontRightAngle2 += (secondChangeVal * level));
+        delay(15);
+    }
+    delay(500);
+
+    level = changedVal;
+    for (int i = 0; i < term; i++) {
+        if (rearRightAngle2 == secondHighAngle) {
+            level = changedVal * -1;
+        }
+
+        rearRight.write(tempCenterRR -=  changedVal);
+        rearRight2.write(rearRightAngle2 += (secondChangeVal * level));
+        delay(15);
+    }
+    delay(500);
+
+    level = changedVal * -1;
+    for (int i = 0; i < term; i++) {
+        if (rearLeftAngle2 == secondLowAngle) {
+            level = changedVal;
+        }
+
+        rearLeft.write(tempCenterRL -=  changedVal);
+        rearLeft2.write(rearLeftAngle2 += (secondChangeVal * level));
+        delay(15);
+    }
+    delay(500);
+
+
+    for (int i = 0; i < term; i++) {
+        frontLeft.write(tempCenterFL +=  changedVal);
+        delay(15);
+        frontRight.write(tempCenterFR +=  changedVal);
+        delay(15);
+        rearLeft.write(tempCenterRL +=  changedVal);
+        delay(15);
+        rearRight.write(tempCenterRR +=  changedVal);
+    }
+    delay(500);
+}
+
+void twistLeft() {
+    Serial.println("twist left");
+    int tempCenterFL = centerAngle;
+    int tempCenterFR = centerAngle;
+    int tempCenterRL = centerAngle;
+    int tempCenterRR = centerAngle;
+
+    int state = frontLeft.read();
+
+    if (state <= minAngle) return;
+
+    for (int i = 0; i < term; i++) {
+        frontLeft.write(tempCenterFL -=  changedVal);
+        frontRight.write(tempCenterFR -=  changedVal);
+        rearLeft.write(tempCenterRL -=  changedVal);
+        rearRight.write(tempCenterRR -=  changedVal);
+    }
+}
+
+void twistRight() {
+    Serial.println("twist right");
+    int tempCenterFL = centerAngle;
+    int tempCenterFR = centerAngle;
+    int tempCenterRL = centerAngle;
+    int tempCenterRR = centerAngle;
+
+    int state = frontLeft.read();
+
+    if (state >= maxAngle) return;
+
+    for (int i = 0; i < term; i++) {
+        frontLeft.write(tempCenterFL +=  changedVal);
+        frontRight.write(tempCenterFR +=  changedVal);
+        rearLeft.write(tempCenterRL +=  changedVal);
+        rearRight.write(tempCenterRR +=  changedVal);
+    }
 }
