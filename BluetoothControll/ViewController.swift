@@ -20,11 +20,14 @@ class ViewController: UIViewController, CBCentralManagerDelegate, CBPeripheralDe
     @IBOutlet private weak var buttonLeft: UIButton!
     @IBOutlet private weak var buttonRight: UIButton!
     @IBOutlet private weak var reset: UIButton!
+    @IBOutlet private weak var clear: UIButton!
     
     @IBOutlet private weak var moveSwitch: UISwitch!
     @IBOutlet private weak var rotateSwitch: UISwitch!
     @IBOutlet private weak var twistSwitch: UISwitch!
     @IBOutlet private weak var tiltSwitch: UISwitch!
+    @IBOutlet private weak var hTiltSwitch: UISwitch!
+    @IBOutlet private weak var upDownSwitch: UISwitch!
     
     private var centralManager: CBCentralManager?
     private var discoveredPeripheral: CBPeripheral?
@@ -37,6 +40,8 @@ class ViewController: UIViewController, CBCentralManagerDelegate, CBPeripheralDe
     var isRotate = false
     var isTwist = false
     var isTilt = false
+    var isHtilt = false
+    var isUpDown = false
     
     // And somewhere to store the incoming data
     private let data = NSMutableData()
@@ -307,17 +312,29 @@ class ViewController: UIViewController, CBCentralManagerDelegate, CBPeripheralDe
         centralManager?.cancelPeripheralConnection(discoveredPeripheral!)
     }
     
+    @IBAction func clearText(sender: UIButton) {
+        self.textView.text = ""
+    }
+    
+    
     @IBAction func lognPressForward(sender: UILongPressGestureRecognizer) {
         let gestureState = sender.state;
         
         switch (gestureState) {
         case .Began :
             print("Began")
-            
             if isMove {
+                self.textView.text = self.textView.text + "-> GO FOWARD \n"
                 timer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: #selector(ViewController.sendMessage(_:)), userInfo: NSData(bytes:actionProtocol.goForward(), length:6), repeats: true)
             } else if isTilt {
-                
+                self.textView.text = self.textView.text + "-> TILT FOWARD \n"
+                timer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: #selector(ViewController.sendMessage(_:)), userInfo: NSData(bytes:actionProtocol.tiltForward(), length:6), repeats: true)
+            } else if isHtilt {
+                self.textView.text = self.textView.text + "-> HORIZON TILT FOWARD \n"
+                timer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: #selector(ViewController.sendMessage(_:)), userInfo: NSData(bytes:actionProtocol.horizontalTiltForward(), length:6), repeats: true)
+            } else if isUpDown {
+                self.textView.text = self.textView.text + "-> UP \n"
+                timer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: #selector(ViewController.sendMessage(_:)), userInfo: NSData(bytes:actionProtocol.turnUp(), length:6), repeats: true)
             }
         case .Changed :
             print("Changed")
@@ -325,9 +342,20 @@ class ViewController: UIViewController, CBCentralManagerDelegate, CBPeripheralDe
         case .Ended :
             print("Ended")
             if isMove {
+                self.textView.text = self.textView.text + "-> GO FOWARD STOPPED \n"
                 stopTimer()
             } else if isTilt {
-                
+                self.textView.text = self.textView.text + "-> Tilt FOWARD STOPPED \n"
+                sendData(NSData(bytes:actionProtocol.reset(), length:6))
+                stopTimer()
+            } else if isHtilt {
+                self.textView.text = self.textView.text + "-> Horizon Tilt FOWARD STOPPED \n"
+                sendData(NSData(bytes:actionProtocol.reset(), length:6))
+                stopTimer()
+            } else if isUpDown {
+                self.textView.text = self.textView.text + "-> Up STOPPED \n"
+                sendData(NSData(bytes:actionProtocol.reset(), length:6))
+                stopTimer()
             }
         default :
             print("Default")
@@ -342,13 +370,20 @@ class ViewController: UIViewController, CBCentralManagerDelegate, CBPeripheralDe
         case .Began :
             print("Began")
             if isMove {
+                self.textView.text = self.textView.text + "-> GO LEFT \n"
                 timer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: #selector(ViewController.sendMessage(_:)), userInfo: NSData(bytes:actionProtocol.goLeft(), length:6), repeats: true)
             } else if isRotate {
+                self.textView.text = self.textView.text + "-> ROTATE LEFT \n"
                 timer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: #selector(ViewController.sendMessage(_:)), userInfo: NSData(bytes:actionProtocol.turnLeft(), length:6), repeats: true)
             } else if isTwist {
+                self.textView.text = self.textView.text + "-> TWIST LEFT \n"
                 sendData(NSData(bytes:actionProtocol.twistLeft(), length:6))
             } else if isTilt {
-                
+                self.textView.text = self.textView.text + "-> TILT LEFT \n"
+                sendData(NSData(bytes:actionProtocol.tiltLeft(), length:6))
+            } else if isHtilt {
+                self.textView.text = self.textView.text + "-> TWIST LEFT \n"
+                sendData(NSData(bytes:actionProtocol.horizontalTiltLeft(), length:6))
             }
             
         case .Changed :
@@ -358,13 +393,23 @@ class ViewController: UIViewController, CBCentralManagerDelegate, CBPeripheralDe
             print("Ended")
             
             if isMove {
+                self.textView.text = self.textView.text + "-> GO LEFT STOPPED \n"
                 stopTimer()
             } else if isRotate {
+                self.textView.text = self.textView.text + "-> ROTATE LEFT STOPPED \n"
                 stopTimer()
             } else if isTwist {
+                self.textView.text = self.textView.text + "-> TWIST LEFT STOPPED \n"
                 sendData(NSData(bytes:actionProtocol.reset(), length:6))
+                stopTimer()
             } else if isTilt {
-                
+                self.textView.text = self.textView.text + "-> TILT LEFT STOPPED \n"
+                sendData(NSData(bytes:actionProtocol.reset(), length:6))
+                stopTimer()
+            } else if isHtilt {
+                self.textView.text = self.textView.text + "-> HORIZON TILT LEFT STOPPED \n"
+                sendData(NSData(bytes:actionProtocol.reset(), length:6))
+                stopTimer()
             }
         default :
             print("Default")
@@ -380,13 +425,20 @@ class ViewController: UIViewController, CBCentralManagerDelegate, CBPeripheralDe
             print("Began")
             
             if isMove {
+                self.textView.text = self.textView.text + "-> GO RIGHT \n"
                 timer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: #selector(ViewController.sendMessage(_:)), userInfo: NSData(bytes:actionProtocol.goRight(), length:6), repeats: true)
             } else if isRotate {
+                self.textView.text = self.textView.text + "-> ROTATE RIGHT \n"
                 timer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: #selector(ViewController.sendMessage(_:)), userInfo: NSData(bytes:actionProtocol.turnRight(), length:6), repeats: true)
             } else if isTwist {
+                self.textView.text = self.textView.text + "-> TWIST RIGHT \n"
                 sendData(NSData(bytes:actionProtocol.twistRight(), length:6))
             } else if isTilt {
-                
+                self.textView.text = self.textView.text + "-> TILT RIGHT \n"
+                sendData(NSData(bytes:actionProtocol.tiltRight(), length:6))
+            } else if isHtilt {
+                self.textView.text = self.textView.text + "-> HORIZON TILT RIGHT \n"
+                sendData(NSData(bytes:actionProtocol.horizontalTiltRight(), length:6))
             }
         case .Changed :
             print("Changed")
@@ -395,13 +447,23 @@ class ViewController: UIViewController, CBCentralManagerDelegate, CBPeripheralDe
             print("Ended")
             
             if isMove {
+                self.textView.text = self.textView.text + "-> GO RIGHT STOPPED \n"
                 stopTimer()
             } else if isRotate {
+                self.textView.text = self.textView.text + "-> ROTATE RIGHT STOPPED \n"
                 stopTimer()
             } else if isTwist {
+                self.textView.text = self.textView.text + "-> TWIST RIGHT STOPPED \n"
                 sendData(NSData(bytes:actionProtocol.reset(), length:6))
+                stopTimer()
             } else if isTilt {
-                
+                self.textView.text = self.textView.text + "-> TILT RIGHT STOPPED \n"
+                sendData(NSData(bytes:actionProtocol.reset(), length:6))
+                stopTimer()
+            } else if isHtilt {
+                self.textView.text = self.textView.text + "-> HORIZON TILT RIGHT STOPPED \n"
+                sendData(NSData(bytes:actionProtocol.reset(), length:6))
+                stopTimer()
             }
         default :
             print("Default")
@@ -416,9 +478,17 @@ class ViewController: UIViewController, CBCentralManagerDelegate, CBPeripheralDe
             print("Began")
             
             if isMove {
+                self.textView.text = self.textView.text + "-> GO BACK \n"
                 timer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: #selector(ViewController.sendMessage(_:)), userInfo: NSData(bytes:actionProtocol.goBackward(), length:6), repeats: true)
             } else if isTilt {
-                
+                self.textView.text = self.textView.text + "-> TILT BACK \n"
+                sendData(NSData(bytes:actionProtocol.tiltBackward(), length:6))
+            } else if isHtilt {
+                self.textView.text = self.textView.text + "-> HORIZON TILT BACK \n"
+                sendData(NSData(bytes:actionProtocol.horizontalTiltBackward(), length:6))
+            } else if isUpDown {
+                self.textView.text = self.textView.text + "-> DOWN \n"
+                sendData(NSData(bytes:actionProtocol.turnDown(), length:6))
             }
         case .Changed :
             print("Changed")
@@ -426,9 +496,20 @@ class ViewController: UIViewController, CBCentralManagerDelegate, CBPeripheralDe
         case .Ended :
             print("Ended")
             if isMove {
+                self.textView.text = self.textView.text + "-> GO BACK \n"
                 stopTimer()
             } else if isTilt {
-                
+                self.textView.text = self.textView.text + "-> TILT BACK STOPPED \n"
+                sendData(NSData(bytes:actionProtocol.reset(), length:6))
+                stopTimer()
+            } else if isHtilt {
+                self.textView.text = self.textView.text + "-> HORIZON TILT BACK STOPPED \n"
+                sendData(NSData(bytes:actionProtocol.reset(), length:6))
+                stopTimer()
+            } else if isUpDown {
+                self.textView.text = self.textView.text + "-> DOWN STOPPED \n"
+                sendData(NSData(bytes:actionProtocol.reset(), length:6))
+                stopTimer()
             }
         default :
             print("Default")
@@ -437,19 +518,26 @@ class ViewController: UIViewController, CBCentralManagerDelegate, CBPeripheralDe
     
     @IBAction func moveToggle(sender: UISwitch) {
         if sender.on {
+            self.textView.text = self.textView.text + "# MOVE ON \n"
             buttonUp.enabled = true
             buttonDown.enabled = true
+            buttonLeft.enabled = true
+            buttonRight.enabled = true
             
             isMove = true
             isRotate = false
             isTwist = false
             isTilt = false
+            isHtilt = false
+            isUpDown = false
             
             rotateSwitch.setOn(false, animated: true)
             twistSwitch.setOn(false, animated: true)
             tiltSwitch.setOn(false, animated: true)
+            hTiltSwitch.setOn(false, animated: true)
+            upDownSwitch.setOn(false, animated: true)
         } else {
-            if !rotateSwitch.on && !twistSwitch.on && !tiltSwitch.on {
+            if !rotateSwitch.on && !twistSwitch.on && !tiltSwitch.on && !hTiltSwitch.on && !upDownSwitch.on {
                 moveSwitch.setOn(true, animated: false)
             }
         }
@@ -457,10 +545,13 @@ class ViewController: UIViewController, CBCentralManagerDelegate, CBPeripheralDe
     
     @IBAction func rotateToggle(sender: UISwitch) {
         if sender.on {
+            self.textView.text = self.textView.text + "# ROTATE ON \n"
             isMove = false
             isRotate = true
             isTwist = false
             isTilt = false
+            isHtilt = false
+            isUpDown = false
             
             buttonUp.enabled = false
             buttonDown.enabled = false
@@ -468,8 +559,10 @@ class ViewController: UIViewController, CBCentralManagerDelegate, CBPeripheralDe
             moveSwitch.setOn(false, animated: true)
             twistSwitch.setOn(false, animated: true)
             tiltSwitch.setOn(false, animated: true)
+            hTiltSwitch.setOn(false, animated: true)
+            upDownSwitch.setOn(false, animated: true)
         } else {
-            if !moveSwitch.on && !twistSwitch.on && !tiltSwitch.on {
+            if !moveSwitch.on && !twistSwitch.on && !tiltSwitch.on && !hTiltSwitch.on && !upDownSwitch.on {
                 moveSwitch.setOn(true, animated: false)
             } else {
                 buttonUp.enabled = true
@@ -480,10 +573,13 @@ class ViewController: UIViewController, CBCentralManagerDelegate, CBPeripheralDe
     
     @IBAction func twistToggle(sender: UISwitch) {
         if sender.on {
+            self.textView.text = self.textView.text + "# TWIST ON \n"
             isMove = false
             isRotate = false
             isTwist = true
             isTilt = false
+            isHtilt = false
+            isUpDown = false
             
             buttonUp.enabled = false
             buttonDown.enabled = false
@@ -491,8 +587,10 @@ class ViewController: UIViewController, CBCentralManagerDelegate, CBPeripheralDe
             moveSwitch.setOn(false, animated: true)
             rotateSwitch.setOn(false, animated: true)
             tiltSwitch.setOn(false, animated: true)
+            hTiltSwitch.setOn(false, animated: true)
+            upDownSwitch.setOn(false, animated: true)
         } else {
-            if !rotateSwitch.on && !moveSwitch.on && !tiltSwitch.on {
+            if !rotateSwitch.on && !moveSwitch.on && !tiltSwitch.on && !hTiltSwitch.on && !upDownSwitch.on {
                 moveSwitch.setOn(true, animated: false)
             } else {
                 buttonUp.enabled = true
@@ -503,20 +601,86 @@ class ViewController: UIViewController, CBCentralManagerDelegate, CBPeripheralDe
     
     @IBAction func tiltToggle(sender: UISwitch) {
         if sender.on {
+            self.textView.text = self.textView.text + "# TILT ON \n"
             isMove = false
             isRotate = false
             isTwist = false
             isTilt = true
+            isHtilt = false
+            isUpDown = false
+            
+            buttonUp.enabled = true
+            buttonDown.enabled = true
+            buttonLeft.enabled = true
+            buttonRight.enabled = true
             
             moveSwitch.setOn(false, animated: true)
             rotateSwitch.setOn(false, animated: true)
             twistSwitch.setOn(false, animated: true)
+            hTiltSwitch.setOn(false, animated: true)
+            upDownSwitch.setOn(false, animated: true)
         } else {
-            if !rotateSwitch.on && !twistSwitch.on && !moveSwitch.on {
+            if !rotateSwitch.on && !twistSwitch.on && !moveSwitch.on && !hTiltSwitch.on && !upDownSwitch.on {
                 moveSwitch.setOn(true, animated: false)
             }
         }
     }
+    
+    @IBAction func hTiltToggle(sender: UISwitch) {
+        if sender.on {
+            self.textView.text = self.textView.text + "# HORIZON TILT ON \n"
+            isMove = false
+            isRotate = false
+            isTwist = false
+            isTilt = false
+            isHtilt = true
+            isUpDown = false
+            
+            buttonUp.enabled = true
+            buttonDown.enabled = true
+            buttonLeft.enabled = true
+            buttonRight.enabled = true
+            
+            moveSwitch.setOn(false, animated: true)
+            rotateSwitch.setOn(false, animated: true)
+            twistSwitch.setOn(false, animated: true)
+            tiltSwitch.setOn(false, animated: true)
+            upDownSwitch.setOn(false, animated: true)
+        } else {
+            if !rotateSwitch.on && !twistSwitch.on && !moveSwitch.on && !moveSwitch.on && !tiltSwitch.on && !upDownSwitch.on {
+                moveSwitch.setOn(true, animated: false)
+            }
+        }
+    }
+    
+    @IBAction func upDownToggle(sender: UISwitch) {
+        if sender.on {
+            self.textView.text = self.textView.text + "# UP/DOWN ON \n"
+            isMove = false
+            isRotate = false
+            isTwist = false
+            isTilt = false
+            isHtilt = false
+            isUpDown = true
+            
+            buttonLeft.enabled = false
+            buttonRight.enabled = false
+            
+            moveSwitch.setOn(false, animated: true)
+            rotateSwitch.setOn(false, animated: true)
+            twistSwitch.setOn(false, animated: true)
+            tiltSwitch.setOn(false, animated: true)
+            hTiltSwitch.setOn(false, animated: true)
+        } else {
+            if !rotateSwitch.on && !twistSwitch.on && !moveSwitch.on && !moveSwitch.on && !tiltSwitch.on && !hTiltSwitch.on {
+                moveSwitch.setOn(true, animated: false)
+            } else {
+                buttonLeft.enabled = false
+                buttonRight.enabled = false
+            }
+        }
+    }
+    
     
     /*
     @IBAction func buttonUpTouch (sender: UIButton) {
@@ -559,6 +723,7 @@ class ViewController: UIViewController, CBCentralManagerDelegate, CBPeripheralDe
     
     @IBAction func resetTouched (sender: UIButton) {
         print("buttonRight Release!!!")
+        self.textView.text = self.textView.text + "-> MOTOR POSITION RESET \n"
         sendData(NSData(bytes:actionProtocol.reset(), length:6))
     }
     

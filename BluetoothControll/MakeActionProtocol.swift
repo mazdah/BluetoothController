@@ -68,22 +68,22 @@ class MakeActionProtocol {
 
     // 기울이기 : 전, 후, 좌, 우
     func  tiltForward() -> [UInt8] {
-        buffer = [0x72, 0x61, 0x73, 0x66, speed, distance]
+        buffer = [0x72, 0x61, 0x74, 0x66, speed, distance]
         return buffer
     }
 
     func tiltBackward() -> [UInt8] {
-        buffer = [0x72, 0x61, 0x73, 0x62, speed, distance]
+        buffer = [0x72, 0x61, 0x74, 0x62, speed, distance]
         return buffer
     }
 
     func  tiltLeft() -> [UInt8] {
-        buffer = [0x72, 0x61, 0x73, 0x6c, speed, distance]
+        buffer = [0x72, 0x61, 0x74, 0x6c, speed, distance]
         return buffer
     }
 
     func tiltRight() -> [UInt8] {
-        buffer = [0x72, 0x61, 0x73, 0x72, speed, distance]
+        buffer = [0x72, 0x61, 0x74, 0x72, speed, distance]
         return buffer
     }
 
