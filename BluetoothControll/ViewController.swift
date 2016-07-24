@@ -328,13 +328,13 @@ class ViewController: UIViewController, CBCentralManagerDelegate, CBPeripheralDe
                 timer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: #selector(ViewController.sendMessage(_:)), userInfo: NSData(bytes:actionProtocol.goForward(), length:6), repeats: true)
             } else if isTilt {
                 self.textView.text = self.textView.text + "-> TILT FOWARD \n"
-                timer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: #selector(ViewController.sendMessage(_:)), userInfo: NSData(bytes:actionProtocol.tiltForward(), length:6), repeats: true)
+                sendData(NSData(bytes:actionProtocol.tiltForward(), length:6))
             } else if isHtilt {
                 self.textView.text = self.textView.text + "-> HORIZON TILT FOWARD \n"
-                timer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: #selector(ViewController.sendMessage(_:)), userInfo: NSData(bytes:actionProtocol.horizontalTiltForward(), length:6), repeats: true)
+                sendData(NSData(bytes:actionProtocol.horizontalTiltForward(), length:6))
             } else if isUpDown {
                 self.textView.text = self.textView.text + "-> UP \n"
-                timer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: #selector(ViewController.sendMessage(_:)), userInfo: NSData(bytes:actionProtocol.turnUp(), length:6), repeats: true)
+                sendData(NSData(bytes:actionProtocol.turnUp(), length:6))
             }
         case .Changed :
             print("Changed")

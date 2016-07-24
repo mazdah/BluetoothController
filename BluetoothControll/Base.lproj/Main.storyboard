@@ -29,16 +29,16 @@
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="hiN-IG-p7z">
-                                <rect key="frame" x="20" y="492" width="193" height="80"/>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" editable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hiN-IG-p7z">
+                                <rect key="frame" x="20" y="492" width="250" height="80"/>
                                 <color key="backgroundColor" red="1" green="1" blue="0.40000000600000002" alpha="0.17524245689655171" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="100" id="4kD-k4-q3H"/>
-                                    <constraint firstAttribute="width" constant="190" id="eRt-lC-LtU"/>
+                                    <constraint firstAttribute="width" constant="250" id="eRt-lC-LtU"/>
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="160" id="jYQ-C2-HIN"/>
                                 </constraints>
                                 <inset key="scrollIndicatorInsets" minX="0.0" minY="0.0" maxX="0.0" maxY="5"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                 <variation key="default">
                                     <mask key="constraints">
@@ -70,6 +70,28 @@
                                     <action selector="tiltToggle:" destination="BYZ-38-t0r" eventType="valueChanged" id="UiI-gb-ps8"/>
                                 </connections>
                             </switch>
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Bkn-VP-8B9">
+                                <rect key="frame" x="84" y="130" width="65" height="64"/>
+                                <color key="backgroundColor" red="1" green="0.1183767382" blue="0.094853980030000007" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="60" id="0eV-Uq-BCO"/>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="60" id="TNg-xn-U72"/>
+                                    <constraint firstAttribute="height" constant="60" id="vHN-eK-Jhc"/>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="30" id="vOc-PR-L2s"/>
+                                </constraints>
+                                <state key="normal" title="RESET">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="TNg-xn-U72"/>
+                                        <exclude reference="vOc-PR-L2s"/>
+                                    </mask>
+                                </variation>
+                                <connections>
+                                    <action selector="resetTouched:" destination="BYZ-38-t0r" eventType="touchUpInside" id="exv-TN-cR6"/>
+                                </connections>
+                            </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="이동" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="I2P-36-hsg">
                                 <rect key="frame" x="474" y="147" width="30" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -181,7 +203,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Yos-fY-aj3">
-                                <rect key="frame" x="245" y="517" width="66" height="30"/>
+                                <rect key="frame" x="305" y="517" width="66" height="30"/>
                                 <color key="backgroundColor" red="1" green="0.1183767382" blue="0.094853980030000007" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="30" id="MPq-Bk-E1c"/>
@@ -192,28 +214,6 @@
                                 </state>
                                 <connections>
                                     <action selector="clearText:" destination="BYZ-38-t0r" eventType="touchDown" id="5pj-iH-htc"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Bkn-VP-8B9">
-                                <rect key="frame" x="84" y="130" width="65" height="64"/>
-                                <color key="backgroundColor" red="1" green="0.1183767382" blue="0.094853980030000007" alpha="1" colorSpace="calibratedRGB"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="60" id="0eV-Uq-BCO"/>
-                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="60" id="TNg-xn-U72"/>
-                                    <constraint firstAttribute="height" constant="60" id="vHN-eK-Jhc"/>
-                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="30" id="vOc-PR-L2s"/>
-                                </constraints>
-                                <state key="normal" title="RESET">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <variation key="default">
-                                    <mask key="constraints">
-                                        <exclude reference="TNg-xn-U72"/>
-                                        <exclude reference="vOc-PR-L2s"/>
-                                    </mask>
-                                </variation>
-                                <connections>
-                                    <action selector="resetTouched:" destination="BYZ-38-t0r" eventType="touchUpInside" id="exv-TN-cR6"/>
                                 </connections>
                             </button>
                         </subviews>
